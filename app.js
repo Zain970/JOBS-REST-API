@@ -9,10 +9,13 @@ const rateLimiter = require("express-rate-limit")
 
 // Express
 const express = require('express');
+// Initializing the express app
 const app = express();
 
 // connectDB
 const connectDB = require("./db/connect");
+
+// Authenticate middle-ware
 const authenticateUser = require("./middleware/authentication");
 
 
@@ -27,7 +30,6 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 app.use(express.json());
 
 
-
 // Security Middlewares
 
 app.set("trust proxy", 1);
@@ -37,10 +39,11 @@ app.use(rateLimiter({
   max: 100   // Limit each ip to 100 requests per windowMs
 })
 );
-
 app.use(helmet())
 app.use(cors());
 app.use(xss());
+
+
 
 app.get("/", (req, res) => {
   res.send("Jobs api");
